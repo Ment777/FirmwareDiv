@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cursor-color: rgb(34, 211, 238);
+  --cursor-color-alpha: rgba(34, 211, 238, 0.8);
+  --cursor-color-light: rgba(34, 211, 238, 0.3);
+}
+
+* {
+  cursor: none !important;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+* {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+body {
+  @apply bg-white dark:bg-[#070B14] text-gray-900 dark:text-white transition-colors duration-300;
+}
+
+.cursor {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99999;
+  mix-blend-mode: screen;
+  will-change: transform;
+  top: 0;
+  left: 0;
+  transform: translate(var(--x, 0), var(--y, 0));
+}
+
+.cursor-core {
+  width: 4px;
+  height: 4px;
+  background: var(--cursor-color);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px var(--cursor-color-alpha);
+}
+
+.cursor-ring {
+  width: 24px;
+  height: 24px;
+  border: 1.5px solid var(--cursor-color-alpha);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  clip-path: polygon(0 0, 100% 0, 100% 25%, 75% 25%, 75% 75%, 25% 75%, 25% 25%, 0 25%);
+  animation: rotate 2s linear infinite;
+}
+
+.cursor-trail {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1px solid var(--cursor-color-light);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(calc(1 + (var(--index) * 0.2)));
+  transition: all 0.15s ease;
+}
+
+@keyframes rotate {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+a:hover ~ .cursor .cursor-ring,
+button:hover ~ .cursor .cursor-ring,
+[role="button"]:hover ~ .cursor .cursor-ring {
+  width: 32px;
+  height: 32px;
+  border-color: var(--cursor-color);
+}
+
+a:hover ~ .cursor .cursor-trail,
+button:hover ~ .cursor .cursor-trail,
+[role="button"]:hover ~ .cursor .cursor-trail {
+  border-color: var(--cursor-color-alpha);
+  transform: translate(-50%, -50%) scale(calc(1.2 + (var(--index) * 0.2)));
+}
+
+nav a.active {
+  box-shadow: 0 0 15px var(--cursor-color-light);
+}
